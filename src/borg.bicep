@@ -7,23 +7,27 @@ param vmssPassword string
 
 // https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/201-vmss-windows-webapp-dsc-autoscale/
 
+var baseName = 'kube-borg'
+var computeName = '${baseName}-compute'
+var mgmtName = '${baseName}-mgmt'
+
 resource kubeVmssRg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
-  name: 'kube-borg-rg'
+  name: '${computeName}-rg'
   location: 'WestUS3'
 }
 
 resource kubeMgmtRg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
-  name: 'kube-mgmt-rg'
+  name: '${mgmtName}-rg'
   location: 'WestUS3'
 }
 
 module kubeKv 'templates/keyVault.bicep' = {
-  name: 'kube-borg-mgmt-kv'
+  name: '${mgmtName}-secrets'
   scope: kubeMgmtRg
   params: {
-    keyVaultName: 'kube-borg-mgmt-kv'
+    keyVaultName: '${mgmtName}-secrets'
     objectId: aadPrincipalId
-    secretName: 'kube-borg-vmss-password'
+    secretName: '${computeName}-password'
     secretValue: vmssPassword
      enabledForDeployment: true
      enabledForDiskEncryption: true
@@ -37,11 +41,11 @@ resource kv 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
 }
 
 module kubeVmss 'templates/vmss.bicep' = {
-  name: 'kubeVmss'
+  name: computeName
   scope: kubeVmssRg
   params: {
-    vmssName: 'kube-borg-vmss'
-    adminPassword: kv.getSecret('kube-borg-vmss-password')
+    vmScaleSetName: computeName
+    adminPassword: kv.getSecret('${computeName}-password')
   }
   dependsOn: [
     kv

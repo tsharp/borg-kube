@@ -1,7 +1,7 @@
 @description('String used as a base for naming resources. Must be 3-61 characters in length and globally unique across Azure. A hash is prepended to this string for some resources, and resource-specific information is appended.')
 @minLength(3)
 @maxLength(61)
-param vmssName string
+param vmScaleSetName string
 
 @description('Size of VMs in the VM Scale Set.')
 param vmSku string = 'Standard_D2s_v3'
@@ -31,14 +31,21 @@ param adminPassword string
 @description('Location for all resources.')
 param location string = resourceGroup().location
 
-var vmScaleSetName = toLower('${vmssName}${uniqueString(resourceGroup().id)}')
 var addressPrefix = '10.0.0.0/16'
 var subnetPrefix = '10.0.0.0/24'
-var vNetName = '${vmScaleSetName}vnet'
-var publicIPAddressName = '${vmScaleSetName}pip'
-var subnetName = '${vmScaleSetName}subnet'
-var nicName = '${vmScaleSetName}nic'
-var ipConfigName = '${vmScaleSetName}ipconfig'
+var vNetName = '${vmScaleSetName}-vnet'
+var subnetName = '${vmScaleSetName}-subnet'
+var nicName = '${vmScaleSetName}-nic'
+var ipConfigName = '${vmScaleSetName}-ipconfig'
+
+module loadBalancer 'loadBalancer.bicep' = {
+  name: '${vmScaleSetName}-lb'
+  params: {
+    lbName: '${vmScaleSetName}-lb'
+    beResourceName: vmScaleSetName
+    location: location
+  }
+}
 
 var osType = {
   publisher: 'MicrosoftCBLMariner'
@@ -60,6 +67,9 @@ var imageReference = osType
 resource vmScaleSet 'Microsoft.Compute/virtualMachineScaleSets@2023-09-01' = {
   name: vmScaleSetName
   location: location
+  dependsOn: [
+    loadBalancer
+  ]
   sku: {
     name: vmSku
     tier: 'Standard'
@@ -99,7 +109,11 @@ resource vmScaleSet 'Microsoft.Compute/virtualMachineScaleSets@2023-09-01' = {
                     subnet: {
                       id: vNet.properties.subnets[0].id
                     }
-                    loadBalancerBackendAddressPools: []
+                    loadBalancerBackendAddressPools: [
+                      {
+                        id: loadBalancer.outputs.lbBePoolId
+                      }
+                    ]
                   }
                 }
               ]
@@ -110,17 +124,6 @@ resource vmScaleSet 'Microsoft.Compute/virtualMachineScaleSets@2023-09-01' = {
       extensionProfile: {
         extensions: []
       }
-    }
-  }
-}
-
-resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2023-04-01' = {
-  name: publicIPAddressName
-  location: location
-  properties: {
-    publicIPAllocationMethod: 'Static'
-    dnsSettings: {
-      domainNameLabel: vmScaleSetName
     }
   }
 }
@@ -146,15 +149,15 @@ resource vNet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
 }
 
 resource autoscalehost 'Microsoft.Insights/autoscalesettings@2022-10-01' = {
-  name: 'autoscalehost'
+  name: '${vmScaleSetName}-ash'
   location: location
   properties: {
-    name: 'autoscalehost'
+    name: '${vmScaleSetName}-ash'
     targetResourceUri: vmScaleSet.id
     enabled: true
     profiles: [
       {
-        name: 'Profile1'
+        name: 'CpuProfile_1_10'
         capacity: {
           minimum: '1'
           maximum: '10'
@@ -203,4 +206,4 @@ resource autoscalehost 'Microsoft.Insights/autoscalesettings@2022-10-01' = {
   }
 }
 
-output applicationUrl string = uri('http://${publicIPAddress.properties.dnsSettings.fqdn}', '/MyApp')
+output applicationUrl string = uri('http://${loadBalancer.outputs.fqdn}', '/MyApp')
