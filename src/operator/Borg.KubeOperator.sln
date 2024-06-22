@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35004.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Borg.KubeOperator", "Borg.KubeOperator\Borg.KubeOperator.csproj", "{632D3BDB-F455-468A-B58F-997AFD693197}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Borg.KubeOperator.Web", "Borg.KubeOperator.Web\Borg.KubeOperator.Web.csproj", "{23E56647-CE25-43D6-BCAB-237937B422DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{632D3BDB-F455-468A-B58F-997AFD693197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{632D3BDB-F455-468A-B58F-997AFD693197}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{632D3BDB-F455-468A-B58F-997AFD693197}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{632D3BDB-F455-468A-B58F-997AFD693197}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23E56647-CE25-43D6-BCAB-237937B422DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23E56647-CE25-43D6-BCAB-237937B422DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23E56647-CE25-43D6-BCAB-237937B422DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23E56647-CE25-43D6-BCAB-237937B422DE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {211A9B96-0F7B-4C8C-BBC4-3EEFC896621C}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,6 @@
+@Borg.KubeOperator.Web_HostAddress = http://localhost:5157
+
+GET {{Borg.KubeOperator.Web_HostAddress}}/service/healthz
+Accept: application/json
+
+###
