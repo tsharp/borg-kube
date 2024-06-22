@@ -1,0 +1,1 @@
+dotnet kubeops g op borg-operator --out artifacts

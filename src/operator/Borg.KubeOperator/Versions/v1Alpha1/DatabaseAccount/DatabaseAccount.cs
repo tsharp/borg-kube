@@ -17,16 +17,16 @@ namespace Borg.KubeOperator.Versions.v1Alpha1.DatabaseAccount
         Failed
     }
 
-    [KubernetesEntity(Group = "kuiper-sys.com", ApiVersion = "v1alpha1", Kind = "DatabaseAccount")]
+    [KubernetesEntity(Group = "db.kuiper-sys.com", ApiVersion = "v1alpha1", Kind = "DatabaseAccount")]
     public class DatabaseAccount :
         CustomKubernetesEntity<DatabaseAccount.EntitySpec, DatabaseAccount.EntityStatus>
     {
         public override string ToString()
-            => $"Test Entity ({Metadata.Name}): {Spec.AccountName}";
+            => $"Test Entity ({Metadata.Name}): {Spec.AccountRegion}";
 
         public class EntitySpec
         {
-            public string AccountName { get; set; } = string.Empty;
+            public string AccountRegion { get; set; } = string.Empty;
         }
 
         public class EntityStatus

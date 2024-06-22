@@ -1,0 +1,26 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: borg-operator-mutators
+webhooks:
+- name: mutate.databaseaccount.v1alpha1.db.kuiper-sys.com # Name of the webhook
+  admissionReviewVersions:
+  - v1
+  clientConfig:
+    # caBundle:
+    service:
+      name: borg-operator
+      namespace: default
+      path: /mutate/databaseaccount
+      port: 8443
+  matchPolicy: Exact
+  rules:
+  - apiGroups:
+    - db.kuiper-sys.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - databaseaccounts
+  sideEffects: None

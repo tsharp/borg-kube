@@ -5,13 +5,13 @@
 replicaCount: 1
 
 image:
-  repository: some-registry.azurecr.io/borg-operator
+  repository: thefuriousscissors/borg-kube-operator
   pullPolicy: Always # IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
-imagePullSecrets:
-- name: borg-acr
+imagePullSecrets: []
+#- name: borg-acr
 
 nameOverride: ""
 fullnameOverride: ""

@@ -1,0 +1,34 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: borg-operator-role
+rules:
+- apiGroups:
+  - db.kuiper-sys.com
+  resources:
+  - databaseaccounts
+  verbs:
+  - '*'
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - get
+  - list
+  - create
+  - update
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - '*'
+- apiGroups:
+  - db.kuiper-sys.com
+  resources:
+  - databaseaccounts/status
+  verbs:
+  - get
+  - update
+  - patch

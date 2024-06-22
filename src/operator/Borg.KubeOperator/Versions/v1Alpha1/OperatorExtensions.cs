@@ -8,7 +8,7 @@ namespace Borg.KubeOperator.Versions.v1Alpha1
         {
             builder
                 .AddController<DatabaseAccount.DatabaseAccountController, DatabaseAccount.DatabaseAccount>()
-                .AddFinalizer<DatabaseAccount.DatabaseAccountFinalizer, DatabaseAccount.DatabaseAccount>(Guid.NewGuid().ToString());
+                .AddFinalizer<DatabaseAccount.DatabaseAccountFinalizer, DatabaseAccount.DatabaseAccount>();
 
             return builder;
         }

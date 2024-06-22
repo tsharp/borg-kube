@@ -4,9 +4,9 @@ namespace Borg.KubeOperator.Versions.v1Alpha1.DatabaseAccount
 {
     internal class DatabaseAccountFinalizer : IEntityFinalizer<DatabaseAccount>
     {
-        public Task FinalizeAsync(DatabaseAccount entity, CancellationToken cancellationToken)
+        public async Task FinalizeAsync(DatabaseAccount entity, CancellationToken cancellationToken)
         {
-            return Task.CompletedTask;
+            await Task.CompletedTask;
         }
     }
 }

@@ -27,8 +27,12 @@ namespace Borg.KubeOperator.Versions.v1Alpha1.DatabaseAccount
         public async Task ReconcileAsync(DatabaseAccount entity, CancellationToken cancellationToken)
         {
             entity.Status.Status = DatabaseStatus.Updating;
+            entity = await kubeClient.UpdateStatusAsync(entity, cancellationToken);
+
             entity = await accountFinalizer(entity, cancellationToken);
+
             entity.Status.Status = DatabaseStatus.Updated;
+            _ = await kubeClient.UpdateStatusAsync(entity, cancellationToken);
         }
     }
 }

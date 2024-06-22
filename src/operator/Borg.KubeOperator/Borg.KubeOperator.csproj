@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+  <!-- https://learn.microsoft.com/en-us/nuget/hosting-packages/local-feeds -->
   <ItemGroup>
     <PackageReference Include="KubeOps.Operator" Version="9.1.2" />
   </ItemGroup>

@@ -1,0 +1,6 @@
+apiVersion: "db.kuiper-sys.com/v1alpha1"
+kind: DatabaseAccount
+metadata:
+  name: sample-db-account
+spec:
+  accountRegion: "WestUS3"

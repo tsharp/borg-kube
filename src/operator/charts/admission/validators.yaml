@@ -1,0 +1,28 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: borg-operator-validators
+webhooks:
+- name: validate.databaseaccount.v1alpha1.db.kuiper-sys.com # Name of the webhook
+  admissionReviewVersions:
+  - v1
+  clientConfig:
+    # caBundle:
+    service:
+      name: borg-operator
+      namespace: default
+      path: /validate/databaseaccount
+      port: 8443
+  matchPolicy: Exact
+  rules:
+  - apiGroups:
+    - db.kuiper-sys.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    - DELETE
+    resources:
+    - databaseaccounts
+  sideEffects: None
