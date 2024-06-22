@@ -398,5 +398,6 @@ FodyWeavers.xsd
 *.sln.iml
 
 artifacts/
+tools/
 local.settings.json
 local.parameters.json
